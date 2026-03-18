@@ -4,19 +4,6 @@ import { BookOpen, Sparkles, Clock, FileText, Download } from 'lucide-react';
 import { saveAs } from 'file-saver';
 
 export default function LandingPage() {
-  const handleDownload = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/api/download-source');
-      if (!response.ok) throw new Error('Download failed');
-      const blob = await response.blob();
-      saveAs(blob, 'source-code.zip');
-    } catch (error) {
-      console.error('Error downloading source:', error);
-      alert('Có lỗi xảy ra khi tải mã nguồn. Vui lòng thử lại sau.');
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white">
       <header className="flex h-16 items-center justify-between px-6 border-b border-gray-100">
@@ -25,10 +12,6 @@ export default function LandingPage() {
           <span className="text-xl font-bold text-gray-900">Kế hoạch bài dạy Pro+</span>
         </div>
         <nav className="flex items-center gap-4">
-          <button onClick={handleDownload} className="text-sm font-medium text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer">
-            <Download className="h-4 w-4" />
-            Tải mã nguồn
-          </button>
           <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">
             Đăng nhập
           </Link>
@@ -49,11 +32,7 @@ export default function LandingPage() {
           </p>
           <div className="flex justify-center gap-4">
             <Button size="lg" asChild>
-              <Link to="/register">Bắt đầu ngay</Link>
-            </Button>
-            <Button size="lg" variant="outline" onClick={handleDownload} className="flex items-center gap-2 text-emerald-600 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 cursor-pointer">
-              <Download className="h-5 w-5" />
-              Tải mã nguồn (ZIP)
+              <Link to="/app/lesson-plans/new">Bắt đầu ngay</Link>
             </Button>
           </div>
         </section>

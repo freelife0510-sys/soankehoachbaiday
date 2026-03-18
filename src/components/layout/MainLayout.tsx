@@ -5,19 +5,6 @@ import { saveAs } from 'file-saver';
 export default function MainLayout() {
   const navigate = useNavigate();
 
-  const handleDownload = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/api/download-source');
-      if (!response.ok) throw new Error('Download failed');
-      const blob = await response.blob();
-      saveAs(blob, 'source-code.zip');
-    } catch (error) {
-      console.error('Error downloading source:', error);
-      alert('Có lỗi xảy ra khi tải mã nguồn. Vui lòng thử lại sau.');
-    }
-  };
-
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
@@ -40,10 +27,6 @@ export default function MainLayout() {
             <Settings className="mr-3 h-5 w-5 text-gray-500" />
             Cài đặt
           </Link>
-          <button onClick={handleDownload} className="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-emerald-600 hover:bg-emerald-50 mt-4 border border-emerald-200 cursor-pointer">
-            <Download className="mr-3 h-5 w-5 text-emerald-500" />
-            Tải mã nguồn (ZIP)
-          </button>
         </nav>
 
         <div className="p-4 border-t border-gray-200 text-center">
