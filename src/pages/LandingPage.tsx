@@ -12,11 +12,8 @@ export default function LandingPage() {
           <span className="text-xl font-bold text-gray-900">Kế hoạch bài dạy Pro+</span>
         </div>
         <nav className="flex items-center gap-4">
-          <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">
-            Đăng nhập
-          </Link>
           <Button asChild>
-            <Link to="/register">Đăng ký miễn phí</Link>
+            <Link to="/app/dashboard">Vào ứng dụng</Link>
           </Button>
         </nav>
       </header>
@@ -32,7 +29,7 @@ export default function LandingPage() {
           </p>
           <div className="flex justify-center gap-4">
             <Button size="lg" asChild>
-              <Link to="/app/lesson-plans/new">Bắt đầu ngay</Link>
+              <Link to="/app/lesson-plans/new">Bắt đầu soạn bài ngay</Link>
             </Button>
           </div>
         </section>

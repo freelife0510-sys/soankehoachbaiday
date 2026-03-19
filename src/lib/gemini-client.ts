@@ -1,11 +1,10 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const generateLessonPlanContent = async (
   apiKey: string,
   modelId: string,
   data: any
 ) => {
-  const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
 Bạn là chuyên gia giáo dục Việt Nam, chuyên soạn kế hoạch bài dạy.
@@ -93,18 +92,23 @@ Lưu ý:
     apiContents = [...inlineDataFiles, prompt];
   }
 
-  const response = await ai.models.generateContent({
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ 
     model: modelId,
-    contents: apiContents,
-    config: {
-      responseMimeType: 'application/json',
-    },
+    generationConfig: {
+      responseMimeType: "application/json",
+    }
   });
 
-  const jsonStr = response.text?.trim() || '{}';
-  const result = JSON.parse(jsonStr);
+  const result = await model.generateContent(apiContents);
+  const response = await result.response;
+  const jsonStr = response.text().trim();
   
-  const sections = result.sections || [];
+  // Clean up potential markdown code blocks if the API returns them despite the hint
+  const cleanJsonStr = jsonStr.replace(/^```json\s*|```$/g, '');
+  const parsedResult = JSON.parse(cleanJsonStr);
+  
+  const sections = parsedResult.sections || [];
   const transformedSections = sections.map((s: any, i: number) => ({
     sectionKey: s.sectionKey,
     sectionTitle: s.sectionTitle,
@@ -114,7 +118,7 @@ Lưu ý:
   }));
   
   return {
-    ...result,
+    ...parsedResult,
     sections: transformedSections
   };
 };
@@ -126,7 +130,6 @@ export const regenerateLessonSection = async (
   currentContent: string,
   actionPrompt: string
 ) => {
-  const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
 Bạn là chuyên gia giáo dục.
@@ -143,14 +146,17 @@ Trả về JSON với cấu trúc:
 }
 `;
 
-  const response = await ai.models.generateContent({
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ 
     model: modelId,
-    contents: prompt,
-    config: {
-      responseMimeType: 'application/json',
-    },
+    generationConfig: {
+      responseMimeType: "application/json",
+    }
   });
 
-  const jsonStr = response.text?.trim() || '{}';
-  return JSON.parse(jsonStr);
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const jsonStr = response.text().trim();
+  const cleanJsonStr = jsonStr.replace(/^```json\s*|```$/g, '');
+  return JSON.parse(cleanJsonStr);
 };

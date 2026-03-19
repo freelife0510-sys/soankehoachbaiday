@@ -21,7 +21,7 @@ const formSchema = z.object({
   assessmentMethod: z.string().min(1, 'Vui lòng nhập cách đánh giá'),
   materials: z.string().optional(),
   additionalNotes: z.string().optional(),
-  aiModel: z.string().default('gemini-2.5-flash'),
+  aiModel: z.string().default('gemini-1.5-flash'),
 });
 
 const fileToBase64 = (file: File): Promise<{ mimeType: string, data: string }> => {
@@ -50,7 +50,7 @@ export default function CreateLessonPlanPage() {
     defaultValues: {
       durationMinutes: 45,
       curriculum: 'Chương trình GDPT 2018',
-      aiModel: 'gemini-2.5-flash',
+      aiModel: 'gemini-1.5-flash',
     }
   });
 
@@ -167,9 +167,9 @@ export default function CreateLessonPlanPage() {
                 {...register('aiModel')} 
                 className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="gemini-3.1-flash">Gemini 3.1 Flash (Mới, Nhanh)</option>
-                <option value="gemini-2.5-pro">Gemini 2.5 Pro (Thông minh nhất)</option>
-                <option value="gemini-3.1-pro">Gemini 3.1 Pro (Bản thử nghiệm)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Nhanh, Tiết kiệm)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Thông minh, Chính xác)</option>
+                <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Bản mới nhất)</option>
               </select>
             </div>
             <div className="hidden md:block"></div>
