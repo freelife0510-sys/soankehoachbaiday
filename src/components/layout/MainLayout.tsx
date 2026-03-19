@@ -36,7 +36,7 @@ export default function MainLayout() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden">
+      <main className="flex-1 flex flex-col h-full overflow-y-auto">
         <Outlet />
       </main>
     </div>
